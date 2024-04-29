@@ -88,9 +88,7 @@
         :halign "end"
         :space-evenly "false"
 
-        (box
-            (systray :class "systray")
-        )
+        (systray :class "systray" :spacing 14 :space-evenly "true")
         (box :space-evenly "false" :class "system"
             (volume)
             (box

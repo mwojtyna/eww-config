@@ -1,12 +1,13 @@
 $border-radius: 10px;
-$text-color: #B3A1C4;
+$text-color: #b3a1c4;
 $text-color-disabled: #bfc9db;
-$bg-color: #1A1A26;
+$bg-color: #1a1a26;
 
-window, button, .systray {
+window,
+button {
   background-color: transparent;
 }
-button, .systray > menuitem {
+button {
   padding: 0;
 }
 
@@ -56,7 +57,7 @@ button {
     color: white;
   }
   &.current {
-    background: #8A2BE2;
+    background: #8a2be2;
     color: white;
   }
 }
@@ -67,19 +68,12 @@ button {
   }
 
   .systray {
-    > menuitem {
-      margin-right: 16px;
-     
-      &:first-child {
-        margin-left: 8px;
-      }
-      &:last-child {
-        margin-right: 8px;
-      }
-    }
+    margin-left: 8px;
+    margin-right: 12px;
   }
 
   .system {
+    margin-left: 6px;
     box {
       margin-right: 10px;
     }
@@ -87,7 +81,7 @@ button {
 
   .clock {
     margin: 0 8px;
-  } 
+  }
 }
 
 .separator {
@@ -116,4 +110,3 @@ scale trough {
     border-radius: $border-radius/2;
   }
 }
-
