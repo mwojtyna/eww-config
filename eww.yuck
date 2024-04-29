@@ -1,0 +1,135 @@
+;; Variables
+(deflisten workspaces :initial "[]" "~/.config/eww/scripts/get-workspaces")
+(deflisten current_workspace :initial "1" "~/.config/eww/scripts/get-active-workspace.sh")
+(deflisten time "~/.config/eww/scripts/get-time.sh")
+(deflisten date "~/.config/eww/scripts/get-date.sh")
+(defpoll is_online :initial "true" :interval "3s" "~/.config/eww/scripts/is-online.sh")
+(deflisten audio_vol :initial "50" "~/.config/eww/scripts/get-audio --volume")
+(deflisten audio_toggle :initial "true" "~/.config/eww/scripts/get-audio --toggle")
+(defvar power "false")
+(defvar volume "false")
+(defvar duration "300ms")
+
+(defwindow bar
+    :monitor 0
+    :geometry (geometry 
+        :x "0"
+        :y "10px"
+        :width "2520px"
+        :height "42px"
+        :anchor "top center")
+    :stacking "fg"
+    (container)
+)
+
+;; Widgets
+(defwidget container []
+    (box :class "container"
+        (power)
+        (workspaces)
+        (right)
+    )
+)
+
+(defwidget power []
+    (box :space-evenly "false" :valign "center" :halign "start"
+        (eventbox
+            :onhover "eww update power=true"	
+            :onhoverlost "eww update power=false" 
+            (box		
+                :space-evenly "false" 	 
+                :vexpand "false" 	
+                :class "powermenu"
+
+                (button		
+                    :style "color: #ff808d; margin-right: 6px;"
+                    :tooltip "Shutdown"		 
+                    :onclick "shutdown now"	"")
+
+                (revealer	
+                    :transition "slideright"				
+                    :reveal power			 
+                    :duration "${duration}"
+                    (box	
+                        :space-evenly "false"
+
+                        (button		
+                            :style "font-size: 24px; margin: 0 12px;"
+                            :tooltip "Sleep"		 
+                            :onclick "systemctl suspend" "󰤄")
+
+                        (button		
+                            :style "font-size: 23px;"
+                            :tooltip "Restart"		 
+                            :onclick "reboot" "")
+                    )
+                )
+            )
+        )
+    )
+)
+
+(defwidget workspaces []
+    (box :halign "center"
+        (label :text "${workspaces}${current_workspace}" :visible "false")
+        (for workspace in workspaces
+            (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}" 
+                (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
+                    (label :text "${workspace.id}")
+                )
+            )
+        )
+    )
+)
+
+(defwidget right []
+    (box
+        :class "right"
+        :halign "end"
+        :space-evenly "false"
+
+        (box
+            (systray :class "systray")
+        )
+        (box :space-evenly "false" :class "system"
+            (volume)
+            (box
+                (label :text "${is_online ? "󰤨" : "󰤮"}" :style "font-size: 24px;")
+            )
+        )
+        (label :text "|" :class "separator")
+        (box :class "clock"
+            :orientation "vertical"
+            (label :text "${time}")
+            (label :text "${date}")
+        )
+    )
+)
+
+(defwidget volume []
+    (box
+        (eventbox 
+            :onscroll "~/.config/eww/scripts/set-audio.sh {}" 
+            :onclick "amixer sset Master toggle" 
+            :onhover "eww update volume=true"
+            :onhoverlost "eww update volume=false"
+            :tooltip "${audio_vol}%${audio_toggle == "off" ? " (muted)" : ""}"
+            (box :space-evenly "false"
+                (label :style "font-size: 30px;" :text "${audio_toggle == "on" ? audio_vol <= 33 ? '󰕿' : audio_vol <= 66 ? '󰖀' : '󰕾' : "󰝟" }")
+                (revealer 
+                    :transition "slideright" 
+                    :reveal volume
+                    :duration "${duration}"
+                    (scale
+                        :class "volbar"
+                        :value audio_vol
+                        :tooltip "${audio_vol}%${audio_toggle == "off" ? " (muted)" : ""}"
+                        :max 100
+                        :min 0 
+                        :onchange "amixer sset Master {}%" 
+                    )
+                )
+            )
+        )
+    )
+)

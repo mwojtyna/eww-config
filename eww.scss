@@ -1,0 +1,119 @@
+$border-radius: 10px;
+$text-color: #B3A1C4;
+$text-color-disabled: #bfc9db;
+$bg-color: #1A1A26;
+
+window, button, .systray {
+  background-color: transparent;
+}
+button, .systray > menuitem {
+  padding: 0;
+}
+
+tooltip {
+  &.background {
+    background-color: #0f0f17;
+    border-radius: 10px;
+    color: $text-color-disabled;
+  }
+
+  label {
+    font-size: 16px;
+    padding: 3px 6px;
+  }
+}
+
+button {
+  margin-right: 0.25em;
+  box-shadow: none;
+}
+
+.container {
+  all: unset;
+}
+.container > box {
+  border-radius: $border-radius;
+  background-color: $bg-color;
+  color: $text-color;
+  font-family: "JetBrainsMono NF";
+  font-weight: bold;
+  font-size: 16px;
+  padding: 0 6px;
+}
+
+.powermenu {
+  font-size: 22px;
+  padding: 5px 5px 4px 5px;
+}
+
+.workspace-entry {
+  border-radius: $border-radius;
+  padding: 0 6px;
+  margin: 6px 0;
+  color: $text-color;
+
+  &.occupied {
+    color: white;
+  }
+  &.current {
+    background: #8A2BE2;
+    color: white;
+  }
+}
+
+.right {
+  & > box:not(:last-child) {
+    margin-right: 12px;
+  }
+
+  .systray {
+    > menuitem {
+      margin-right: 16px;
+     
+      &:first-child {
+        margin-left: 8px;
+      }
+      &:last-child {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .system {
+    box {
+      margin-right: 10px;
+    }
+  }
+
+  .clock {
+    margin: 0 8px;
+  } 
+}
+
+.separator {
+  font-size: 24px;
+  font-weight: 400;
+  color: #777;
+}
+
+scale trough {
+  background: lighten($bg-color, 5%);
+  border-radius: $border-radius/2;
+  min-width: 80px;
+  min-height: 10px;
+  margin: 0 -12px;
+
+  slider {
+    all: unset;
+  }
+}
+
+.volbar {
+  margin-left: 12px;
+
+  trough highlight {
+    background-color: $text-color;
+    border-radius: $border-radius/2;
+  }
+}
+
