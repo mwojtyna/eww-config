@@ -3,12 +3,12 @@ use hyprland::{
     event_listener::EventListener,
     shared::{HyprData, WorkspaceId},
 };
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 struct WorkspaceData {
     id: WorkspaceId,
-    windows: u16,
+    occupied: bool,
 }
 
 fn main() {
@@ -22,15 +22,19 @@ fn main() {
 fn update_workspaces() {
     let mut workspaces = Workspaces::get()
         .expect("Failed to get workspaces")
+        .iter()
         .map(|w| WorkspaceData {
             id: w.id,
-            windows: w.windows,
+            occupied: w.windows > 0,
         })
         .collect::<Vec<WorkspaceData>>();
 
     for i in 1..=10 {
         if !workspaces.iter().any(|w| w.id == i) {
-            workspaces.push(WorkspaceData { id: i, windows: 0 });
+            workspaces.push(WorkspaceData {
+                id: i,
+                occupied: false,
+            });
         }
     }
     workspaces.sort_by(|a, b| a.id.cmp(&b.id));
