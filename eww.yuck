@@ -44,7 +44,7 @@
                 (button		
                     :style "color: #ff808d; margin-right: 6px;"
                     :tooltip "Shutdown"		 
-                    :onclick "shutdown now"	"")
+                    :onclick "pkill wl-clip-persist && shutdown now" "")
 
                 (revealer	
                     :transition "slideright"				
