@@ -73,7 +73,7 @@
     (box :halign "center"
         (label :text "${workspaces}${current_workspace}" :visible "false")
         (for workspace in workspaces
-            (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}" 
+            (eventbox :onclick "hyprctl dispatch 'hl.dsp.focus({ workspace = ${workspace.id} })'" 
                 (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.occupied ? "occupied" : "empty"}"
                     (label :text "${workspace.id}")
                 )
